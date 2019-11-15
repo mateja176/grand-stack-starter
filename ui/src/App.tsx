@@ -1,114 +1,108 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-
 import {
   AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
   CssBaseline,
-  Drawer,
-  List,
   Divider,
+  Drawer,
+  IconButton,
+  List,
   ListItem,
   ListItemIcon,
-  ListItemText
-} from "@material-ui/core";
-
+  ListItemText,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import {
-  Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
   Dashboard as DashboardIcon,
   EventNote as EventNoteIcon,
-  People as PeopleIcon
-} from "@material-ui/icons";
-
-import UserList from "./UserList";
-import classNames from "classnames";
+  Menu as MenuIcon,
+  People as PeopleIcon,
+} from '@material-ui/icons';
+import classNames from 'classnames';
+import React, { Component } from 'react';
+import UserList from './UserList';
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: "flex"
+    display: 'flex',
   },
   toolbar: {
-    paddingRight: 24
+    paddingRight: 24,
   },
   toolbarIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
-    backgroundColor: "#383838"
+    backgroundColor: '#383838',
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
     marginLeft: 12,
-    marginRight: 36
+    marginRight: 36,
   },
   menuButtonHidden: {
-    display: "none"
+    display: 'none',
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   drawerPaper: {
-    position: "relative",
-    whiteSpace: "nowrap",
+    position: 'relative',
+    whiteSpace: 'nowrap',
     width: drawerWidth,
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   drawerPaperClose: {
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing.unit * 7,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing.unit * 9
-    }
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing.unit * 9,
+    },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
-    height: "100vh",
-    overflow: "auto"
-  }
+    height: '100vh',
+    overflow: 'auto',
+  },
 });
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedView: "Home",
-      open: true
-    };
-  }
+  state = {
+    selectedView: 'Home',
+    open: true,
+  };
 
   setSelectedView(viewName) {
     this.setState({
-      selectedView: viewName
+      selectedView: viewName,
     });
   }
 
@@ -121,30 +115,27 @@ class App extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const {
+      props: { classes },
+      state: { open, selectedView },
+    } = this;
 
     return (
-      <React.Fragment>
+      <>
         <CssBaseline />
         <div className={classes.root}>
           <AppBar
             position="absolute"
-            className={classNames(
-              classes.appBar,
-              this.state.open && classes.appBarShift
-            )}
+            className={classNames(classes.appBar, open && classes.appBarShift)}
           >
-            <Toolbar
-              disableGutters={!this.state.open}
-              className={classes.toolbar}
-            >
+            <Toolbar disableGutters={!open} className={classes.toolbar}>
               <IconButton
                 color="inherit"
                 aria-label="Open drawer"
                 onClick={this.handleDrawerOpen}
                 className={classNames(
                   classes.menuButton,
-                  this.state.open && classes.menuButtonHidden
+                  open && classes.menuButtonHidden,
                 )}
               >
                 <MenuIcon />
@@ -165,10 +156,10 @@ class App extends Component {
             classes={{
               paper: classNames(
                 classes.drawerPaper,
-                !this.state.open && classes.drawerPaperClose
-              )
+                !open && classes.drawerPaperClose,
+              ),
             }}
-            open={this.state.open}
+            open={open}
           >
             <div className={classes.toolbarIcon}>
               <IconButton onClick={this.handleDrawerClose}>
@@ -178,7 +169,7 @@ class App extends Component {
             <Divider />
             <List>
               <div>
-                <ListItem button onClick={() => this.setSelectedView("Home")}>
+                <ListItem button onClick={() => this.setSelectedView('Home')}>
                   <ListItemIcon>
                     <DashboardIcon />
                   </ListItemIcon>
@@ -187,7 +178,7 @@ class App extends Component {
 
                 <ListItem
                   button
-                  onClick={() => this.setSelectedView("Businesses")}
+                  onClick={() => this.setSelectedView('Businesses')}
                 >
                   <ListItemIcon>
                     <EventNoteIcon />
@@ -195,7 +186,7 @@ class App extends Component {
                   <ListItemText primary="Businesses" />
                 </ListItem>
 
-                <ListItem button onClick={() => this.setSelectedView("Users")}>
+                <ListItem button onClick={() => this.setSelectedView('Users')}>
                   <ListItemIcon>
                     <PeopleIcon />
                   </ListItemIcon>
@@ -209,13 +200,13 @@ class App extends Component {
 
             {/* FIXME: Use proper routing here instead  */}
             <Typography component="div" className={classes.chartContainer}>
-              {this.state.selectedView === "Home" ? <UserList /> : null}
-              {this.state.selectedView === "Businesses" ? <div /> : null}
-              {this.state.selectedView === "Users" ? <UserList /> : null}
+              {selectedView === 'Home' ? <UserList /> : null}
+              {selectedView === 'Businesses' ? <div /> : null}
+              {selectedView === 'Users' ? <UserList /> : null}
             </Typography>
           </main>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

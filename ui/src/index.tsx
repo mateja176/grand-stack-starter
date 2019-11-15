@@ -1,13 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import registerServiceWorker from "./registerServiceWorker";
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from '@apollo/react-hooks';
+import ApolloClient from 'apollo-boost';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import './index.css';
+import registerServiceWorker from './registerServiceWorker';
 
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_GRAPHQL_URI
+  uri: process.env.REACT_APP_GRAPHQL_URI,
 });
 
 const Main = () => (
@@ -16,5 +16,5 @@ const Main = () => (
   </ApolloProvider>
 );
 
-ReactDOM.render(<Main />, document.getElementById("root"));
+ReactDOM.render(<Main />, document.getElementById('root'));
 registerServiceWorker();
