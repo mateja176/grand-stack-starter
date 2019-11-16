@@ -11,7 +11,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import {
   ChevronLeft as ChevronLeftIcon,
   Dashboard as DashboardIcon,
@@ -25,7 +25,7 @@ import UserList from './UserList';
 
 const drawerWidth = 240;
 
-const styles = theme => ({
+const styles = createStyles(theme => ({
   root: {
     display: 'flex',
   },
@@ -92,11 +92,14 @@ const styles = theme => ({
     height: '100vh',
     overflow: 'auto',
   },
-});
+}));
 
-class App extends Component {
+const views = ['Home', 'Businesses', 'Users'] as const;
+type View = typeof views[number];
+
+class App extends Component<WithStyles, { open: boolean; selectedView: View }> {
   state = {
-    selectedView: 'Home',
+    selectedView: 'Home' as View,
     open: true,
   };
 
@@ -142,12 +145,12 @@ class App extends Component {
               </IconButton>
               <Typography
                 component="h1"
-                variant="title"
+                variant="h2"
                 color="inherit"
                 noWrap
                 className={classes.title}
               >
-                Welcome To GRANDstack
+                Welcome To GRAND Stack
               </Typography>
             </Toolbar>
           </AppBar>

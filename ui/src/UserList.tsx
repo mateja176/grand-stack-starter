@@ -11,12 +11,13 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { createStyles, withStyles } from '@material-ui/core/styles';
+import { SortDirection } from '@material-ui/core/TableCell';
 import gql from 'graphql-tag';
 import React from 'react';
 import './UserList.css';
 
-const styles = theme => ({
+const styles = createStyles(theme => ({
   root: {
     maxWidth: 700,
     marginTop: theme.spacing.unit * 3,
@@ -31,7 +32,7 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
     minWidth: 300,
   },
-});
+}));
 
 const GET_USER = gql`
   query usersPaginateQuery(
@@ -51,17 +52,16 @@ const GET_USER = gql`
 
 function UserList(props) {
   const { classes } = props;
-  const [order, setOrder] = React.useState('asc');
+  const [order, setOrder] = React.useState<SortDirection>('asc');
   const [orderBy, setOrderBy] = React.useState('name');
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page] = React.useState(0);
+  const [rowsPerPage] = React.useState(10);
   const [filterState, setFilterState] = React.useState({ usernameFilter: '' });
 
-  const getFilter = () => {
-    return filterState.usernameFilter.length > 0
+  const getFilter = () =>
+    filterState.usernameFilter.length > 0
       ? { name_contains: filterState.usernameFilter }
       : {};
-  };
 
   const { loading, data, error } = useQuery(GET_USER, {
     variables: {
@@ -74,7 +74,7 @@ function UserList(props) {
 
   const handleSortRequest = property => {
     const newOrderBy = property;
-    let newOrder = 'desc';
+    let newOrder: SortDirection = 'desc';
 
     if (orderBy === property && order === 'desc') {
       newOrder = 'asc';
@@ -92,6 +92,8 @@ function UserList(props) {
       [filterName]: val,
     }));
   };
+
+  const direction = order || 'asc';
 
   return (
     <Paper className={classes.root}>
@@ -124,7 +126,7 @@ function UserList(props) {
                 <Tooltip title="Sort" placement="bottom-start" enterDelay={300}>
                   <TableSortLabel
                     active={orderBy === 'name'}
-                    direction={order}
+                    direction={direction}
                     onClick={() => handleSortRequest('name')}
                   >
                     Name
@@ -134,12 +136,11 @@ function UserList(props) {
               <TableCell
                 key="avgStars"
                 sortDirection={orderBy === 'avgStars' ? order : false}
-                numeric
               >
                 <Tooltip title="Sort" placement="bottom-end" enterDelay={300}>
                   <TableSortLabel
                     active={orderBy === 'avgStars'}
-                    direction={order}
+                    direction={direction}
                     onClick={() => handleSortRequest('avgStars')}
                   >
                     Average Stars
@@ -149,12 +150,11 @@ function UserList(props) {
               <TableCell
                 key="numReviews"
                 sortDirection={orderBy === 'numReviews' ? order : false}
-                numeric
               >
                 <Tooltip title="Sort" placement="bottom-start" enterDelay={300}>
                   <TableSortLabel
                     active={orderBy === 'numReviews'}
-                    direction={order}
+                    direction={direction}
                     onClick={() => handleSortRequest('numReviews')}
                   >
                     Number of Reviews
@@ -170,10 +170,10 @@ function UserList(props) {
                   <TableCell component="th" scope="row">
                     {n.name}
                   </TableCell>
-                  <TableCell numeric>
+                  <TableCell>
                     {n.avgStars ? n.avgStars.toFixed(2) : '-'}
                   </TableCell>
-                  <TableCell numeric>{n.numReviews}</TableCell>
+                  <TableCell>{n.numReviews}</TableCell>
                 </TableRow>
               );
             })}
